@@ -1,0 +1,16 @@
+# nombre del proyecto o servicio 
+service: PizzaApp
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+
+functions:
+  hello:
+    handler: handler.newOrder
+    events:
+      - httpApi:
+          path: /order
+          method: POST
