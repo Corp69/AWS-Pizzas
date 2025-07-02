@@ -1,4 +1,4 @@
-# nombre del proyecto o servicio 
+# nombre del proyecto o servicio.
 service: PizzaApp
 
 frameworkVersion: '4'
@@ -14,3 +14,29 @@ functions:
       - httpApi:
           path: /order
           method: POST
+  getOrder:
+    handler: handler.getOrder
+    events: 
+      - httpApi: 
+          path: /order/{orderId}
+          method: get
+  preOrder:
+    handler: handler.preOrder
+    events: 
+      - sqs: 
+          arn: 
+            Fn::GetAtt:
+              - PendingOrderQueue
+              - Arn
+          batchSize: 1
+
+resources:
+  Resources:
+    PendingOrderQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: PendingOrderQueue
+
+
+
+
